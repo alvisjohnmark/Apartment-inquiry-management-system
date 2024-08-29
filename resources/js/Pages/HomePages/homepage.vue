@@ -2,26 +2,26 @@
     <section class="h-screen background">
         <nav class="flex justify-between mx-16 p-8">
             <div>
-                <h1 class="text-[#718355] font-bold py-2 px-4 text-2xl">
+                <h1 class="text-[#495057] font-bold py-2 px-4 text-2xl">
                     AnJos Apartment
                 </h1>
             </div>
             <div class="flex space-x-4 text-xl">
                 <RouterLink
                     to="/admin/login"
-                    class="bg-[#87986a] hover:bg-[#718355] text-white font-bold py-2 px-4 rounded"
+                    class="bg-[#007bff] hover:bg-[#495057] text-white font-bold py-2 px-4 rounded"
                 >
                     Admin
                 </RouterLink>
                 <RouterLink
                     to="/tenant/login"
-                    class="bg-[#87986a] hover:bg-[#718355] text-white font-bold py-2 px-4 rounded"
+                    class="bg-[#007bff] hover:bg-[#495057] text-white font-bold py-2 px-4 rounded"
                 >
                     Tenant
                 </RouterLink>
                 <RouterLink
                     to="/inquire"
-                    class="bg-[#e9f5db] hover:bg-[#cfe1b9] text-[#718355] font-bold py-2 px-4 rounded border-2 border-[#718355]"
+                    class="bg-[#f8f9fa] hover:bg-[#adb5bd] text-[#495057] font-bold py-2 px-4 rounded border-2 border-[#495057]"
                 >
                     Inquire
                 </RouterLink>
@@ -29,7 +29,7 @@
         </nav>
         <div class="flex justify-around mt-28">
             <div class="max-w-lg lg:text-left mt-8 lg:mt-0">
-                <h2 class="text-4xl font-bold text-[#718355] mb-4">
+                <h2 class="text-4xl font-bold text-[#495057] mb-4">
                     Welcome to AnJos Apartment
                 </h2>
                 <p class="text-lg text-gray-700 mb-6">
@@ -39,7 +39,7 @@
                 </p>
                 <RouterLink
                     to="/inquire"
-                    class="bg-[#87986a] hover:bg-[#718355] text-white font-bold py-3 px-6 rounded transition duration-300"
+                    class="bg-[#007bff] hover:bg-[#495057] text-white font-bold py-3 px-6 rounded transition duration-300"
                 >
                     Explore Now
                 </RouterLink>
@@ -53,10 +53,10 @@
             </div>
         </div>
         <footer
-            class="fixed bottom-0 w-full bg-[#e9f5db] text-center text-[#718355] py-4"
+            class="fixed bottom-0 w-full  text-center text-[#495057] py-4"
         >
             <div class="container flex justify-center space-x-4 mb-4">
-                <a href="#!" class="p-2 hover:bg-[#cfe1b9] rounded-full">
+                <a href="#!" class="p-2 hover:bg-[#adb5bd] rounded-full">
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
                         fill="currentColor"
@@ -68,7 +68,7 @@
                         />
                     </svg>
                 </a>
-                <a href="#!" class="p-2 hover:bg-[#cfe1b9] rounded-full">
+                <a href="#!" class="p-2 hover:bg-[#adb5bd] rounded-full">
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
                         fill="currentColor"
@@ -80,7 +80,7 @@
                         />
                     </svg>
                 </a>
-                <a href="#!" class="p-2 hover:bg-[#cfe1b9] rounded-full">
+                <a href="#!" class="p-2 hover:bg-[#adb5bd] rounded-full">
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
                         fill="currentColor"
@@ -92,7 +92,7 @@
                         />
                     </svg>
                 </a>
-                <a href="#!" class="p-2 hover:bg-[#cfe1b9] rounded-full">
+                <a href="#!" class="p-2 hover:bg-[#adb5bd] rounded-full">
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
                         fill="currentColor"
@@ -100,35 +100,34 @@
                         class="h-6 w-6"
                     >
                         <path
-                            d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.8 9.9 67.6 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388.3c-7.8 19.7-22.9 35.1-42.5 42.5-29.5 11.7-99.5 9-132.3 9s-102.7 2.6-132.3-9c-19.7-7.8-35.1-22.9-42.5-42.5-11.7-29.5-9-99.5-9-132.3s-2.6-102.7 9-132.3c7.8-19.7 22.9-35.1 42.5-42.5 29.5-11.7 99.5-9 132.3-9s102.7-2.6 132.3 9c19.7 7.8 35.1 22.9 42.5 42.5 11.7 29.5 9 99.5 9 132.3s2.7 102.8-9 132.3z"
+                            d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.8 9.9 67.6 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 35.1-42.4 42.9-29.4 11.7-99.1 9-132.3 9s-102.9 2.6-132.3-9c-19.6-7.8-34.7-23.3-42.4-42.9-11.7-29.4-9-99.1-9-132.3s-2.6-102.9 9-132.3c7.8-19.6 22.9-35.1 42.4-42.9C145.9 70.2 215.6 72.8 248.8 72.8s102.9-2.6 132.3 9c19.6 7.8 34.7 23.3 42.4 42.9 11.7 29.4 9 99.1 9 132.3s2.8 102.9-9 132.3z"
                         />
                     </svg>
                 </a>
-                <a href="#!" class="p-2 hover:bg-[#cfe1b9] rounded-full">
+                <a href="#!" class="p-2 hover:bg-[#adb5bd] rounded-full">
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
                         fill="currentColor"
-                        viewBox="0 0 448 512"
+                        viewBox="0 0 512 512"
                         class="h-6 w-6"
                     >
                         <path
-                            d="M100.3 448H7V148.9h93.3V448zm-46.5-340.2C24.1 107.8 0 83.4 0 53.5S24.1-1 53.8-1s53.5 24.4 53.5 54.2-24.1 54.1-53.5 54.1zM447.8 448H354.5V302.4c0-34.8-.7-79.5-48.4-79.5-48.4 0-55.9 37.8-55.9 76.9V448H157V148.9h89.3v40.8h1.3c12.4-23.5 42.6-48.4 87.6-48.4 93.8 0 111.1 61.8 111.1 142.3V448z"
+                            d="M504 256C504 119 393 8 256 8S8 119 8 256c0 123.5 90.8 225.6 209 245.5V327.7h-63V256h63v-54.6c0-62.2 37-96.6 93.5-96.6 27.1 0 55.4 4.9 55.4 4.9v60.8H372c-30.8 0-40.3 19.1-40.3 38.6V256h68.8l-11 71.7h-57.8v173.8c118.3-19.9 209-122 209-245.5z"
                         />
                     </svg>
                 </a>
             </div>
-            <div class="w-full p-2 text-center text-[#718355]">
-                © 2024 Copyright:
-                <a href="/" class="text-[#718355]">AnJos Apartment</a>
-            </div>
+            <p class="text-sm">
+                © 2024 AnJos Apartment. All rights reserved.
+            </p>
         </footer>
     </section>
 </template>
 
-<script setup></script>
+<script setup>
+
+</script>
 
 <style scoped>
-.background {
-    background-color: #e9f5db;
-}
+
 </style>
