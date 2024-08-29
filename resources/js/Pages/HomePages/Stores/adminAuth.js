@@ -1,4 +1,5 @@
 import { defineStore } from "pinia";
+import { toast } from "vue3-toastify";
 
 export const useAdminAuthStore = defineStore("adminAuth", {
     state: () => ({
@@ -18,10 +19,30 @@ export const useAdminAuthStore = defineStore("adminAuth", {
                 localStorage.setItem("admin_token", this.adminToken);
 
                 await this.fetchAdmin();
+                toast.success("Login successful! Redirecting to dashboard...", {
+                    autoClose: 3000, 
+                });
 
-                this.router.push("/admin/dashboard");
+                setTimeout(() => {
+                    this.router.push("/admin/dashboard");
+                }, 2000); 
             } catch (error) {
                 console.error("Admin login failed", error);
+                if (error.response && error.response.status === 401) {
+                    toast.error(
+                        "Invalid credentials. Please check your email and password.",
+                        {
+                            autoClose: 3000, 
+                        }
+                    );
+                } else {
+                    toast.error(
+                        "An error occurred during login. Please try again later.",
+                        {
+                            autoClose: 3000, 
+                        }
+                    );
+                }
             }
         },
         async fetchAdmin() {
@@ -35,6 +56,13 @@ export const useAdminAuthStore = defineStore("adminAuth", {
                     this.admin = response.data.admin;
                 } catch (error) {
                     console.error("Failed to fetch admin data", error);
+
+                    toast.error(
+                        "Failed to fetch admin data. Please try again.",
+                        {
+                            autoClose: 3000, 
+                        }
+                    );
                 }
             }
         },
@@ -42,7 +70,14 @@ export const useAdminAuthStore = defineStore("adminAuth", {
             this.adminToken = null;
             this.admin = null;
             localStorage.removeItem("admin_token");
-            this.router.push("/admin/login");
+
+            toast.error("Logged out successfully.", {
+                autoClose: 3000, 
+            });
+
+            setTimeout(() => {
+                this.router.push("/admin/login");
+            }, 2000);
         },
         getAdminName() {
             axios
