@@ -12,11 +12,11 @@ class tenantController extends Controller
     public function login(Request $request)
     {
         $request->validate([
-            'email' => 'required|email',
+            'username' => 'required|string',
             'password' => 'required',
         ]);
 
-        $tenant = Tenant::where('email', $request->email)->first();
+        $tenant = Tenant::where('username', $request->username)->first();
 
         if ($tenant && Hash::check($request->password, $tenant->password)) {
             $token = $tenant->createToken('tenant-token', ['tenant'])->plainTextToken;
