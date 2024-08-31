@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Admin;
+use App\Models\Announcement;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
@@ -50,7 +51,53 @@ class adminController extends Controller
         } else {
             return response()->json(['error' => 'User not authenticated'], 401);
         }
+    }
 
-}
+    public function saveAnnouncement(Request $request)
+    {
+        $announcement = new Announcement();
+        $announcement->title = $request->input('title');
+        $announcement->content = $request->input('content');
+        $announcement->save();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Announcement added successfully.',
+        ], 201);
+    }
+    public function getAnnouncements()
+    {
+        $announcements = Announcement::all();
+        return response()->json([
+            'success' => true,
+            'announcements' => $announcements,
+        ], 200);
+    }
+
+    public function deleteAnnouncement($id)
+    {
+        $announcement = Announcement::find($id);
+        if ($announcement) {
+            $announcement->delete();
+            return response()->json(['message' => 'Announcement deleted successfully.']);
+        } else {
+            return response()->json(['message' => 'Announcement not found.'], 404);
+        }
+    }
+
+    public function updateAnnouncement(Request $request, $id)
+    {
+        $validatedData = $request->validate([
+            'title' => 'required|string|max:255',
+            'content' => 'required|string',
+        ]);
+        $announcement = Announcement::find($id);
+        if (!$announcement) {
+            return response()->json(['message' => 'Announcement not found'], 404);
+        }
+        $announcement->update($validatedData);
+        return response()->json(['message' => 'Announcement updated successfully']);
+    }
+
 }
 

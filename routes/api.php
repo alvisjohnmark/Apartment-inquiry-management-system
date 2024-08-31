@@ -11,6 +11,11 @@ Route::prefix('admin')->group(function () {
     Route::middleware('auth:sanctum')->group(function () {
         Route::get('dashboard', [adminController::class, 'dashboard']);
         Route::get('name', [adminController::class, 'getAdminName']); 
+        Route::post('saveAnnouncements', [adminController::class, 'saveAnnouncement']); 
+        Route::get('getAnnouncements', [adminController::class, 'getAnnouncements']); 
+        Route::delete('deleteAnnouncement/{id}', [adminController::class, 'deleteAnnouncement']);
+        Route::put('updateAnnouncement/{id}', [adminController::class, 'updateAnnouncement']);
+
     });
 });
 
