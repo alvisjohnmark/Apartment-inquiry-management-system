@@ -10,11 +10,11 @@
       <h1 class="text-2xl font-bold text-center text-[#495057] mb-6">
         Admin Login
       </h1>
-      <form @submit.prevent="loginAdmin">
+      <form @submit.prevent="admin.loginAdmin">
         <div class="input-group mb-4">
           <label for="email" class="block text-[#495057] mb-2">Email</label>
           <input
-            v-model="email"
+            v-model="admin.email"
             type="email"
             id="email"
             required
@@ -24,7 +24,7 @@
         <div class="input-group mb-6">
           <label for="password" class="block text-[#495057] mb-2">Password</label>
           <input
-            v-model="password"
+            v-model="admin.password"
             type="password"
             id="password"
             required
@@ -43,16 +43,10 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
-import { useAdminAuthStore } from '../HomePages/Stores/adminAuth';
+import { useAdminAuthStore } from './AdminStores/adminAuth';
+const admin = useAdminAuthStore();
 
-const email = ref('');
-const password = ref('');
-const adminAuthStore = useAdminAuthStore();
 
-const loginAdmin = () => {
-  adminAuthStore.loginAdmin(email.value, password.value);
-};
 </script>
 
 <style scoped>

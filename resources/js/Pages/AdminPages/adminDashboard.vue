@@ -12,7 +12,7 @@
                         class="w-8 h-8 mr-3"
                     />
                     <h1 class="text-lg font-semibold">
-                        Welcome back, {{ adminAuthStore.adminName }}!
+                        Welcome back, {{ dashboard.adminName }}!
                     </h1>
                 </div>
                 <div class="flex items-center space-x-4">
@@ -115,7 +115,7 @@
                             </li>
                             <li class="mt-8">
                                 <button
-                                    @click="logout"
+                                    @click="dashboard.logoutAdmin"
                                     class="flex items-center px-4 py-3 w-full text-white hover:text-red-400 transition-colors duration-200"
                                 >
                                     <i
@@ -219,28 +219,17 @@
 </template>
 
 <script setup>
-import { useAdminAuthStore } from "../HomePages/Stores/adminAuth";
-import { ref, onMounted } from "vue";
+import { dashboardStore } from "./AdminStores/dashboardStore";
+import { onMounted } from "vue";
 import { useRoute } from "vue-router";
 
 const route = useRoute();
-const adminAuthStore = useAdminAuthStore();
+const dashboard = dashboardStore();
 
 onMounted(() => {
-    adminAuthStore.getAdminName();
+    dashboard.getAdminName();
 });
 
-// Placeholder values for counters
-const totalUnits = ref(50); // Example value, replace with actual data
-const occupiedUnits = ref(35); // Example value, replace with actual data
-const monthlyPayments = ref("$15,000"); // Example value, replace with actual data
-const pendingInquiries = ref(5); // Example value, replace with actual data
-const availableUnits = ref(15); // Example value, replace with actual data
-const totalTenants = ref(40); // Example value, replace with actual data
-
-const logout = () => {
-    adminAuthStore.logoutAdmin();
-};
 </script>
 
 <style scoped>

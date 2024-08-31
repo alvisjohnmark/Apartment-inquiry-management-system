@@ -229,7 +229,4 @@ body {
     font-family: "Inter", sans-serif;
     overflow: hidden;
 }
-.announcements-container {
-    overflow-y: auto;
-}
 </style>

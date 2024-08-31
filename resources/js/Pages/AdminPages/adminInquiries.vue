@@ -219,7 +219,7 @@
 </template>
 
 <script setup>
-import { useAdminAuthStore } from "../HomePages/Stores/adminAuth";
+import { useAdminAuthStore } from "./AdminStores/adminAuth";
 import { ref, onMounted } from "vue";
 
 const adminAuthStore = useAdminAuthStore();

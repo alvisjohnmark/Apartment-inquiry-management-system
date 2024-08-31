@@ -7,7 +7,7 @@
             <li><router-link to="/tenant/dashboard">Home</router-link></li>
             <li><router-link to="/tenant/bookings">My Bookings</router-link></li>
             <li><router-link to="/tenant/profile">Profile</router-link></li>
-            <li><button @click="logout">Logout</button></li>
+            <li><button @click="tenant.logoutTenant">Logout</button></li>
           </ul>
         </nav>
       </header>
@@ -20,13 +20,8 @@
   </template>
   
   <script setup>
-  import { useTenantAuthStore } from "../HomePages/Stores/tenantAuth"; 
-  
-  const tenantAuthStore = useTenantAuthStore();
-  
-  const logout = () => {
-    tenantAuthStore.logoutTenant();
-  };
+  import { dashboardStore } from "./TenantStores/dashboardStore"; 
+  const tenant = dashboardStore();
   </script>
   
   <style scoped>

@@ -1,18 +1,19 @@
 import { defineStore } from "pinia";
-import axios from "axios";
 import { toast } from "vue3-toastify";
 
 export const useTenantAuthStore = defineStore("tenantAuth", {
     state: () => ({
         tenantToken: localStorage.getItem("tenant_token") || null,
         tenant: null,
+        username: "",
+        password: "",
     }),
     actions: {
-        async loginTenant(username, password) {
+        async loginTenant() {
             try {
                 const response = await axios.post("/api/tenant/login", {
-                    username,
-                    password,
+                    username: this.username,
+                    password: this.password,
                 });
 
                 this.tenantToken = response.data.token;
@@ -65,18 +66,6 @@ export const useTenantAuthStore = defineStore("tenantAuth", {
                     );
                 }
             }
-        },
-        logoutTenant() {
-            this.tenantToken = null;
-            this.tenant = null;
-            localStorage.removeItem("tenant_token");
-
-            toast.error("Logged out successfully.", {
-                autoClose: 3000,
-            });
-            setTimeout(() => {
-                this.router.push("/tenant/login");
-            }, 2000);
         },
     },
 });

@@ -12,13 +12,13 @@
             <h1 class="text-2xl font-bold text-center text-[#495057] mb-6">
                 Tenant Login
             </h1>
-            <form @submit.prevent="loginTenant">
+            <form @submit.prevent="tenant.loginTenant">
                 <div class="input-group mb-4">
                     <label for="username" class="block text-[#495057] mb-2"
                         >Username</label
                     >
                     <input
-                        v-model="username"
+                        v-model="tenant.username"
                         type="text"
                         id="username"
                         required
@@ -30,7 +30,7 @@
                         >Password</label
                     >
                     <input
-                        v-model="password"
+                        v-model="tenant.password"
                         type="password"
                         id="password"
                         required
@@ -49,16 +49,8 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
-import { useTenantAuthStore } from "../HomePages/Stores/tenantAuth";
-
-const username = ref("");
-const password = ref("");
-const tenantAuthStore = useTenantAuthStore();
-
-const loginTenant = async () => {
-    await tenantAuthStore.loginTenant(username.value, password.value);
-};
+import { useTenantAuthStore } from "./TenantStores/tenantAuth";
+const tenant = useTenantAuthStore();
 </script>
 
 <style scoped>
