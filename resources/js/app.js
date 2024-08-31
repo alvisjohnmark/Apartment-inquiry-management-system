@@ -6,14 +6,13 @@ import 'vue3-toastify/dist/index.css';
 import Vue3Toastify, { toast } from 'vue3-toastify';
 import { createApp, markRaw } from "vue/dist/vue.esm-bundler.js";
 import { createRouter, createWebHistory, useRoute } from "vue-router";
-import { routes } from "./route";
 import { createPinia } from "pinia";
+import { routes } from "./route";
 
 const router = createRouter({
     history: createWebHistory(),
     routes: routes,
 });
-
 
 const pinia = createPinia();
 

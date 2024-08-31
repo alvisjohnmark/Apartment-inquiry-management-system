@@ -1,12 +1,11 @@
-// Auth
-import { useAdminAuthStore } from "./Pages/HomePages/Stores/adminAuth";
-import { useTenantAuthStore } from "./Pages/HomePages/Stores/tenantAuth";
+// Auth Guards
+import { adminAuthGuard, tenantAuthGuard } from "./authguard";
 
-//Home
+// Home
 import Home from "./Pages/HomePages/homepage.vue";
 import Inquire from "./Pages/HomePages/inquire.vue";
 
-//Admin
+// Admin
 import AdminDashboard from "./Pages/AdminPages/adminDashboard.vue";
 import AdminInquiries from "./Pages/AdminPages/adminInquiries.vue";
 import AdminUnits from "./Pages/AdminPages/adminUnits.vue";
@@ -14,7 +13,7 @@ import AdminTenants from "./Pages/AdminPages/adminTenants.vue";
 import AdminAnnouncements from "./Pages/AdminPages/adminAnnouncements.vue";
 import AdminLogin from "./Pages/AdminPages/adminLogin.vue";
 
-//Tenant
+// Tenant
 import TenantDashboard from "./Pages/TenantPages/tenantDashboard.vue";
 import TenantLogin from "./Pages/TenantPages/tenantLogin.vue";
 
@@ -39,77 +38,34 @@ export const routes = [
         component: Inquire,
         name: "Inquire",
     },
-
     {
         path: "/admin/dashboard",
         component: AdminDashboard,
-        beforeEnter: (to, from, next) => {
-            const adminAuthStore = useAdminAuthStore();
-            if (!adminAuthStore.adminToken) {
-                next("/admin/login");
-            } else {
-                next();
-            }
-        },
+        beforeEnter: adminAuthGuard,
     },
     {
         path: "/admin/inquiries",
         component: AdminInquiries,
-        beforeEnter: (to, from, next) => {
-            const adminAuthStore = useAdminAuthStore();
-            if (!adminAuthStore.adminToken) {
-                next("/admin/login");
-            } else {
-                next();
-            }
-        },
+        beforeEnter: adminAuthGuard,
     },
     {
         path: "/admin/units",
         component: AdminUnits,
-        beforeEnter: (to, from, next) => {
-            const adminAuthStore = useAdminAuthStore();
-            if (!adminAuthStore.adminToken) {
-                next("/admin/login");
-            } else {
-                next();
-            }
-        },
+        beforeEnter: adminAuthGuard,
     },
     {
         path: "/admin/tenants",
         component: AdminTenants,
-        beforeEnter: (to, from, next) => {
-            const adminAuthStore = useAdminAuthStore();
-            if (!adminAuthStore.adminToken) {
-                next("/admin/login");
-            } else {
-                next();
-            }
-        },
+        beforeEnter: adminAuthGuard,
     },
     {
         path: "/admin/announcements",
         component: AdminAnnouncements,
-        beforeEnter: (to, from, next) => {
-            const adminAuthStore = useAdminAuthStore();
-            if (!adminAuthStore.adminToken) {
-                next("/admin/login");
-            } else {
-                next();
-            }
-        },
+        beforeEnter: adminAuthGuard,
     },
     {
         path: "/tenant/dashboard",
         component: TenantDashboard,
-        beforeEnter: (to, from, next) => {
-            const tenantAuthStore = useTenantAuthStore();
-            if (!tenantAuthStore.tenantToken) {
-                next("/tenant/login");
-            } else {
-                next();
-            }
-        },
+        beforeEnter: tenantAuthGuard,
     },
 ];
