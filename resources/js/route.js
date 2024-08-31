@@ -1,15 +1,22 @@
+// Auth
 import { useAdminAuthStore } from "./Pages/HomePages/Stores/adminAuth";
 import { useTenantAuthStore } from "./Pages/HomePages/Stores/tenantAuth";
 
+//Home
 import Home from "./Pages/HomePages/homepage.vue";
+import Inquire from "./Pages/HomePages/inquire.vue";
+
+//Admin
 import AdminDashboard from "./Pages/AdminPages/adminDashboard.vue";
 import AdminInquiries from "./Pages/AdminPages/adminInquiries.vue";
 import AdminUnits from "./Pages/AdminPages/adminUnits.vue";
 import AdminTenants from "./Pages/AdminPages/adminTenants.vue";
-import TenantDashboard from "./Pages/TenantPages/tenantDashboard.vue";
+import AdminAnnouncements from "./Pages/AdminPages/adminAnnouncements.vue";
 import AdminLogin from "./Pages/AdminPages/adminLogin.vue";
+
+//Tenant
+import TenantDashboard from "./Pages/TenantPages/tenantDashboard.vue";
 import TenantLogin from "./Pages/TenantPages/tenantLogin.vue";
-import Inquire from "./Pages/HomePages/inquire.vue";
 
 export const routes = [
     {
@@ -72,6 +79,18 @@ export const routes = [
     {
         path: "/admin/tenants",
         component: AdminTenants,
+        beforeEnter: (to, from, next) => {
+            const adminAuthStore = useAdminAuthStore();
+            if (!adminAuthStore.adminToken) {
+                next("/admin/login");
+            } else {
+                next();
+            }
+        },
+    },
+    {
+        path: "/admin/announcements",
+        component: AdminAnnouncements,
         beforeEnter: (to, from, next) => {
             const adminAuthStore = useAdminAuthStore();
             if (!adminAuthStore.adminToken) {

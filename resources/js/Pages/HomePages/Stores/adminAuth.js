@@ -20,7 +20,7 @@ export const useAdminAuthStore = defineStore("adminAuth", {
 
                 await this.fetchAdmin();
                 toast.success("Login successful! Redirecting to dashboard...", {
-                    autoClose: 3000, 
+                    autoClose: 2000, 
                 });
 
                 setTimeout(() => {
@@ -32,14 +32,14 @@ export const useAdminAuthStore = defineStore("adminAuth", {
                     toast.error(
                         "Invalid credentials. Please check your email and password.",
                         {
-                            autoClose: 3000, 
+                            autoClose: 2000, 
                         }
                     );
                 } else {
                     toast.error(
                         "An error occurred during login. Please try again later.",
                         {
-                            autoClose: 3000, 
+                            autoClose: 2000, 
                         }
                     );
                 }
@@ -60,7 +60,7 @@ export const useAdminAuthStore = defineStore("adminAuth", {
                     toast.error(
                         "Failed to fetch admin data. Please try again.",
                         {
-                            autoClose: 3000, 
+                            autoClose: 2000, 
                         }
                     );
                 }
@@ -72,7 +72,7 @@ export const useAdminAuthStore = defineStore("adminAuth", {
             localStorage.removeItem("admin_token");
 
             toast.error("Logged out successfully.", {
-                autoClose: 3000, 
+                autoClose: 2000, 
             });
 
             setTimeout(() => {
