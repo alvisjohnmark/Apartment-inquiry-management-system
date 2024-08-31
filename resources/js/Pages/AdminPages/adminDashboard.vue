@@ -1,5 +1,5 @@
 <template>
-    <section class="h-screen bg-[#f8f9fa]">
+    <section class="h-screen bg-[#f8f9fa] overflow-hidden">
         <div class="flex flex-col h-full">
             <!-- Navbar -->
             <nav
@@ -24,8 +24,7 @@
                 </div>
             </nav>
 
-            <div class="flex h-full">
-                <!-- Sidebar -->
+            <div class="flex flex-1 overflow-hidden">
                 <div
                     class="w-1/5 p-6 bg-[#343a40] flex flex-col justify-between"
                 >
@@ -40,52 +39,91 @@
                                 Anjos Apartment
                             </h2>
                         </div>
-                        <ul class="space-y-6 text-lg">
-                            <li class="flex justify-start">
+                        <!-- Sidebar Links -->
+                        <ul class="space-y-3 text-lg mt-8">
+                            <li>
                                 <RouterLink
                                     to="/admin/dashboard"
-                                    class="flex items-center text-white hover:text-[#adb5bd] transition-colors duration-200"
+                                    :class="[
+                                        'flex items-center px-4 py-3 rounded-lg w-full transition-colors duration-200',
+                                        route.path === '/admin/dashboard'
+                                            ? 'bg-[#495057] text-white'
+                                            : 'text-white hover:text-[#adb5bd]',
+                                    ]"
                                 >
                                     <i
-                                        class="pl-1 pr-5 fas fa-tachometer-alt"
+                                        class="pl-1 pr-4 fas fa-tachometer-alt"
                                     ></i>
                                     <span>Dashboard</span>
                                 </RouterLink>
                             </li>
-                            <li class="flex justify-start">
+                            <li>
                                 <RouterLink
                                     to="/admin/units"
-                                    class="flex items-center text-white hover:text-[#adb5bd] transition-colors duration-200"
+                                    :class="[
+                                        'flex items-center px-4 py-3 rounded-lg w-full transition-colors duration-200',
+                                        route.path === '/admin/units'
+                                            ? 'bg-[#495057] text-white'
+                                            : 'text-white hover:text-[#adb5bd]',
+                                    ]"
                                 >
-                                    <i class="pl-1 pr-6 fas fa-building"></i>
+                                    <i class="pl-1 pr-4 fas fa-building"></i>
                                     <span>Units</span>
                                 </RouterLink>
                             </li>
-                            <li class="flex justify-start">
+                            <li>
                                 <RouterLink
                                     to="/admin/tenants"
-                                    class="flex items-center text-white hover:text-[#adb5bd] transition-colors duration-200"
+                                    :class="[
+                                        'flex items-center px-4 py-3 rounded-lg w-full transition-colors duration-200',
+                                        route.path === '/admin/tenants'
+                                            ? 'bg-[#495057] text-white'
+                                            : 'text-white hover:text-[#adb5bd]',
+                                    ]"
                                 >
-                                    <i class="pr-5 fas fa-users"></i>
+                                    <i class="pr-4 fas fa-users"></i>
                                     <span>Tenants</span>
                                 </RouterLink>
                             </li>
-                            <li class="flex justify-start">
+                            <li>
                                 <RouterLink
                                     to="/admin/inquiries"
-                                    class="flex items-center text-white hover:text-[#adb5bd] transition-colors duration-200"
+                                    :class="[
+                                        'flex items-center px-4 py-3 rounded-lg w-full transition-colors duration-200',
+                                        route.path === '/admin/inquiries'
+                                            ? 'bg-[#495057] text-white'
+                                            : 'text-white hover:text-[#adb5bd]',
+                                    ]"
                                 >
-                                    <i class="pl-1 pr-5 fas fa-envelope"></i>
+                                    <i class="pl-1 pr-4 fas fa-envelope"></i>
                                     <span>Inquiries</span>
                                 </RouterLink>
                             </li>
-                            <button
-                                @click="logout"
-                                class="flex items-center text-white hover:text-red-400 transition-colors duration-200 mt-8"
-                            >
-                                <i class="pl-1 pr-5 fas fa-sign-out-alt"></i>
-                                <span>Logout</span>
-                            </button>
+                            <li>
+                                <RouterLink
+                                    to="/admin/announcements"
+                                    :class="[
+                                        'flex items-center px-4 py-3 rounded-lg w-full transition-colors duration-200',
+                                        route.path === '/admin/announcements'
+                                            ? 'bg-[#495057] text-white'
+                                            : 'text-white hover:text-[#adb5bd]',
+                                    ]"
+                                >
+                                    <i class="pl-1 pr-4 fas fa-bullhorn"></i>
+                                    <span>Announcements</span>
+                                </RouterLink>
+                            </li>
+                            <li class="mt-8">
+                                <button
+                                    @click="logout"
+                                    class="flex items-center px-4 py-3 w-full text-white hover:text-red-400 transition-colors duration-200"
+                                >
+                                    <i
+                                        class="pl-1 pr-4 fas fa-sign-out-alt"
+                                    ></i>
+                                    <span>Logout</span>
+                                </button>
+                            </li>
                         </ul>
                     </div>
                 </div>
@@ -183,7 +221,9 @@
 <script setup>
 import { useAdminAuthStore } from "../HomePages/Stores/adminAuth";
 import { ref, onMounted } from "vue";
+import { useRoute } from "vue-router";
 
+const route = useRoute();
 const adminAuthStore = useAdminAuthStore();
 
 onMounted(() => {

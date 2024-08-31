@@ -12,7 +12,7 @@
                         class="w-8 h-8 mr-3"
                     />
                     <h1 class="text-lg font-semibold">
-                        Welcome back, {{ unit.adminName }}!
+                        Welcome back, {{ announcement.adminName }}!
                     </h1>
                 </div>
                 <div class="flex items-center space-x-4">
@@ -47,7 +47,7 @@
                                     to="/admin/dashboard"
                                     :class="[
                                         'flex items-center px-4 py-3 rounded-lg w-full transition-colors duration-200',
-                                        route.path === '/admin/dashboard'
+                                        currentRoute === '/admin/dashboard'
                                             ? 'bg-[#495057] text-white'
                                             : 'text-white hover:text-[#adb5bd]',
                                     ]"
@@ -63,7 +63,7 @@
                                     to="/admin/units"
                                     :class="[
                                         'flex items-center px-4 py-3 rounded-lg w-full transition-colors duration-200',
-                                        route.path === '/admin/units'
+                                        currentRoute === '/admin/units'
                                             ? 'bg-[#495057] text-white'
                                             : 'text-white hover:text-[#adb5bd]',
                                     ]"
@@ -77,7 +77,7 @@
                                     to="/admin/tenants"
                                     :class="[
                                         'flex items-center px-4 py-3 rounded-lg w-full transition-colors duration-200',
-                                        route.path === '/admin/tenants'
+                                        currentRoute === '/admin/tenants'
                                             ? 'bg-[#495057] text-white'
                                             : 'text-white hover:text-[#adb5bd]',
                                     ]"
@@ -91,7 +91,7 @@
                                     to="/admin/inquiries"
                                     :class="[
                                         'flex items-center px-4 py-3 rounded-lg w-full transition-colors duration-200',
-                                        route.path === '/admin/inquiries'
+                                        currentRoute === '/admin/inquiries'
                                             ? 'bg-[#495057] text-white'
                                             : 'text-white hover:text-[#adb5bd]',
                                     ]"
@@ -105,7 +105,7 @@
                                     to="/admin/announcements"
                                     :class="[
                                         'flex items-center px-4 py-3 rounded-lg w-full transition-colors duration-200',
-                                        route.path === '/admin/announcements'
+                                        currentRoute === '/admin/announcements'
                                             ? 'bg-[#495057] text-white'
                                             : 'text-white hover:text-[#adb5bd]',
                                     ]"
@@ -128,76 +128,59 @@
                         </ul>
                     </div>
                 </div>
-                <div class="w-4/5 p-6 bg-white overflow-y-auto">
+
+                <!-- Main Interface -->
+                <div class="w-4/5 p-6 bg-white overflow-hidden flex flex-col">
                     <div class="flex justify-between items-center mb-4">
                         <h1 class="text-2xl font-bold text-[#343a40]">
-                            Units
+                            Announcements
                         </h1>
                         <button
                             class="bg-[#007bff] text-white px-4 py-2 rounded shadow-md hover:bg-[#0056b3] transition-all duration-200"
                             @click="announcement.toggleModal"
                         >
-                            Add Unit
+                            Add Announcement
                         </button>
                     </div>
-                    <div class="grid grid-cols-2 gap-6">
+                    <div class="announcements-container flex-1 overflow-y-auto">
                         <div
-                            class="p-6 bg-white rounded-lg shadow-lg border border-[#dee2e6] hover:shadow-xl transition-shadow duration-300"
+                            v-for="announce in announcement.announcement_list"
+                            :key="announce.id"
+                            class="p-6 bg-white rounded-lg shadow-md border border-[#dee2e6] hover:shadow-lg transition-shadow duration-300 mb-4"
                         >
-                            <div
-                                class="flex justify-between items-center border-b pb-4 mb-4"
-                            >
+                            <div class="flex justify-between items-center">
                                 <h2
-                                    class="text-xl font-semibold text-[#343a40]"
+                                    class="text-xl font-semibold text-[#495057]"
                                 >
-                                    Unit 1
+                                    {{ announce.title }}
                                 </h2>
+                                <p class="text-[#6c757d]">
+                                    {{
+                                        moment(announce.created_at).format(
+                                            "MMMM Do YYYY"
+                                        )
+                                    }}
+                                </p>
+                            </div>
+                            <p class="mt-4 text-[#6c757d]">
+                                {{ announce.content }}
+                            </p>
+                            <div class="flex justify-end gap-2 text-xl">
                                 <button
-                                    @click="editUnit(unit)"
-                                    class="text-blue-600 hover:text-blue-800 transition-colors duration-200"
+                                    @click="
+                                        announcement.editAnnouncement(announce)
+                                    "
+                                    class="text-green-500 hover:text-green-700 transition-colors duration-200"
                                 >
-                                    <i class="fas fa-edit mr-2"></i>Edit
-                                </button>
-                            </div>
-
-                            <div class="flex items-center mb-4">
-                                <span class="mr-2 font-semibold"
-                                    >Occupied:</span
-                                >
-                                <input
-                                    type="checkbox"
-                                    v-model="unit.available"
-                                    class="form-checkbox h-5 w-5 text-blue-600"
-                                />
-                            </div>
-                            <div class="mb-4">
-                                <span class="font-semibold"
-                                    >Tenant representative:</span
-                                >
-                                <p class="text-gray-700">John doe</p>
-                            </div>
-                            <div class="mb-4">
-                                <span class="font-semibold"
-                                    >Paid This Month:</span
-                                >
-                                <p>No</p>
-                            </div>
-                            <div class="mb-4">
-                                <span class="font-semibold"
-                                    >Overall rent month (August of 2024):</span
-                                >
-                                <p>7300</p>
-                            </div>
-                            <div class="flex justify-end gap-2">
-                                <button
-                                    class="mt-auto bg-blue-500 text-white px-4 py-2 rounded shadow-md hover:bg-blue-700 transition-all duration-200"
-                                >
-                                    Add Bills
+                                    <i class="fas fa-edit"></i>
                                 </button>
                                 <button
-                                    class="mt-auto bg-blue-500 text-white px-4 py-2 rounded shadow-md hover:bg-blue-700 transition-all duration-200"
+                                    @click="
+                                        announcement.confirmDelete(announce.id)
+                                    "
+                                    class="text-red-500 hover:text-red-700 transition-colors duration-200"
                                 >
-                                    View Concerns
+                                    <i class="fas fa-trash-alt"></i>
                                 </button>
                             </div>
                         </div>
@@ -205,31 +188,81 @@
                 </div>
             </div>
         </div>
+        <div
+            v-if="announcement.showModal"
+            class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center px-4"
+        >
+            <div class="bg-white p-8 rounded-xl shadow-2xl w-full max-w-2xl">
+                <h2
+                    class="text-3xl font-semibold mb-8 text-gray-800 border-b pb-4"
+                >
+                    {{
+                        announcement.editingAnnouncement
+                            ? "Edit Announcement"
+                            : "Add New Announcement"
+                    }}
+                </h2>
+                <form @submit.prevent="announcement.submitAnnouncement">
+                    <div class="mb-6">
+                        <label
+                            class="block text-gray-600 text-sm font-medium mb-2"
+                            >Title</label
+                        >
+                        <input
+                            type="text"
+                            class="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500 transition duration-300 ease-in-out"
+                            v-model="announcement.title"
+                            required
+                        />
+                    </div>
+                    <div class="mb-6">
+                        <label
+                            class="block text-gray-600 text-sm font-medium mb-2"
+                            >Content</label
+                        >
+                        <textarea
+                            class="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500 transition duration-300 ease-in-out h-48 resize-none"
+                            v-model="announcement.content"
+                            required
+                        ></textarea>
+                    </div>
+                    <div class="flex justify-end mt-8">
+                        <button
+                            type="button"
+                            @click="announcement.toggleModal()"
+                            class="bg-gray-100 text-gray-600 hover:text-gray-800 px-6 py-2 rounded-lg border border-gray-300 mr-4 transition duration-300 ease-in-out"
+                        >
+                            Cancel
+                        </button>
+                        <button
+                            type="submit"
+                            class="bg-blue-600 text-white hover:bg-blue-700 px-6 py-2 rounded-lg shadow-lg transition duration-300 ease-in-out"
+                        >
+                            Save
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
     </section>
 </template>
 
 <script setup>
-import { unitsStore } from "./AdminStores/unitsStore";
+import { announcementStore } from "./AdminStores/announcementStore";
 import { onMounted } from "vue";
+import moment from "moment";
 import { useRoute } from "vue-router";
 
-const unit = unitsStore();
+const announcement = announcementStore();
 const route = useRoute();
+const currentRoute = route.path;
 
 onMounted(() => {
-    unit.getAdminName();
+    announcement.getAdminName();
+    announcement.fetchAnnouncements();
 });
+
 const logout = () => {
-    unit.logoutAdmin();
+    announcement.logoutAdmin();
 };
 </script>
-
-<style scoped>
-body {
-    font-family: "Inter", sans-serif;
-    overflow: hidden;
-}
-.announcements-container {
-    overflow-y: auto;
-}
-</style>
