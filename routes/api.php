@@ -15,7 +15,10 @@ Route::prefix('admin')->group(function () {
         Route::get('getAnnouncements', [adminController::class, 'getAnnouncements']); 
         Route::delete('deleteAnnouncement/{id}', [adminController::class, 'deleteAnnouncement']);
         Route::put('updateAnnouncement/{id}', [adminController::class, 'updateAnnouncement']);
-
+        Route::get('getTenants', [adminController::class, 'getTenants']); 
+        Route::post('saveTenant', [adminController::class, 'saveTenant']); 
+        Route::put('tenants/{id}', [adminController::class, 'updateTenant']); 
+        Route::delete('tenants/{id}', [adminController::class, 'deleteTenant']); 
     });
 });
 

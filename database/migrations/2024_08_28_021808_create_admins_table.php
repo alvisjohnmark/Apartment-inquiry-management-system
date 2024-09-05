@@ -28,3 +28,12 @@ return new class extends Migration
         Schema::dropIfExists('admins');
     }
 };
+
+
+// use App\Models\Admin;
+
+// Admin::create([
+//     'name' => 'Ralph Jansen',
+//     'email' => 'admin@gmail.com', 
+//     'password' => bcrypt('password'), 
+// ]);

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Admin;
+use App\Models\Tenant;
 use App\Models\Announcement;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -99,5 +100,53 @@ class adminController extends Controller
         return response()->json(['message' => 'Announcement updated successfully']);
     }
 
-}
+    public function getTenants()
+    {
+        $tenants = Tenant::all();
+        return response()->json([
+            'success' => true,
+            'tenants' => $tenants,
+        ], 200);
+    }
 
+    public function saveTenant(Request $request)
+    {
+
+        $tenant = new Tenant();
+        $tenant->first_name = $request->input('first_name');
+        $tenant->middle_name = $request->input('middle_name');
+        $tenant->last_name = $request->input('first_name');
+        $tenant->phone_number = $request->input('phone_number');
+        $tenant->email = $request->input('email');
+        $tenant->address = $request->input('address');
+        $tenant->username = $request->input('username');
+        $tenant->isRepresentative = $request->input('isRepresentative');
+        $tenant->password = bcrypt($request->input('password'));
+        $tenant->save();
+    
+        return response()->json([
+            'success' => true,
+            'message' => 'Tenant added successfully.',
+        ], 201);
+    }
+    
+
+    public function updateTenant(Request $request, $id)
+    {
+        $tenant = Tenant::findOrFail($id);
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:tenants,email,' . $tenant->id,
+            'phone' => 'required|string|max:20',
+        ]);
+
+        $tenant->updateRenant($request->all());
+        return response()->json($tenant, 200);
+    }
+
+    public function deleteTenant($id)
+    {
+        Tenant::destroy($id);
+        return response()->json(null, 204);
+    }
+}

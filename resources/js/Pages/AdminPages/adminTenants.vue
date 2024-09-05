@@ -12,7 +12,7 @@
                         class="w-8 h-8 mr-3"
                     />
                     <h1 class="text-lg font-semibold">
-                        Welcome back, {{ announcement.adminName }}!
+                        Welcome back, {{ tenant.adminName }}!
                     </h1>
                 </div>
                 <div class="flex items-center space-x-4">
@@ -25,6 +25,7 @@
             </nav>
 
             <div class="flex flex-1 overflow-hidden">
+                <!-- Sidebar -->
                 <div
                     class="w-1/5 p-6 bg-[#343a40] flex flex-col justify-between"
                 >
@@ -115,7 +116,7 @@
                             </li>
                             <li class="mt-8">
                                 <button
-                                    @click="logout"
+                                    @click="tenant.logoutAdmin"
                                     class="flex items-center px-4 py-3 w-full text-white hover:text-red-400 transition-colors duration-200"
                                 >
                                     <i
@@ -127,121 +128,261 @@
                         </ul>
                     </div>
                 </div>
+
                 <!-- Main Interface -->
-                <div class="w-4/5 p-6 bg-white">
-                    <div
-                        class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-                    >
-                        <div
-                            class="bg-white p-6 rounded-lg shadow-md flex flex-col items-center justify-center hover:shadow-lg transition-shadow duration-300"
+                <div class="w-4/5 p-6 bg-white overflow-hidden flex flex-col">
+                    <div class="flex justify-between items-center mb-4">
+                        <h1 class="text-2xl font-bold text-[#343a40]">
+                            Tenants
+                        </h1>
+                        <button
+                            class="bg-[#007bff] text-white px-4 py-2 rounded shadow-md hover:bg-[#0056b3] transition-all duration-200"
+                            @click="tenant.toggleModal"
                         >
-                            <i
-                                class="fas fa-home text-3xl text-[#007bff] mb-4"
-                            ></i>
-                            <h2 class="text-xl font-semibold text-[#212529]">
-                                Total Units
-                            </h2>
-                            <p class="text-4xl font-bold text-[#007bff]">
-                                {{ totalUnits }}
-                            </p>
-                        </div>
-                        <div
-                            class="bg-white p-6 rounded-lg shadow-md flex flex-col items-center justify-center hover:shadow-lg transition-shadow duration-300"
+                            Add Tenant
+                        </button>
+                    </div>
+
+                    <!-- Tenants Table -->
+                    <div class="overflow-x-auto">
+                        <table
+                            class="min-w-full bg-white border border-[#dee2e6]"
                         >
-                            <i
-                                class="fas fa-door-open text-3xl text-[#007bff] mb-4"
-                            ></i>
-                            <h2 class="text-xl font-semibold text-[#212529]">
-                                Occupied Units
-                            </h2>
-                            <p class="text-4xl font-bold text-[#007bff]">
-                                {{ occupiedUnits }}
-                            </p>
-                        </div>
-                        <div
-                            class="bg-white p-6 rounded-lg shadow-md flex flex-col items-center justify-center hover:shadow-lg transition-shadow duration-300"
-                        >
-                            <i
-                                class="fas fa-dollar-sign text-3xl text-[#007bff] mb-4"
-                            ></i>
-                            <h2 class="text-xl font-semibold text-[#212529]">
-                                Payments This Month
-                            </h2>
-                            <p class="text-4xl font-bold text-[#007bff]">
-                                {{ monthlyPayments }}
-                            </p>
-                        </div>
-                        <div
-                            class="bg-white p-6 rounded-lg shadow-md flex flex-col items-center justify-center hover:shadow-lg transition-shadow duration-300"
-                        >
-                            <i
-                                class="fas fa-envelope-open-text text-3xl text-[#007bff] mb-4"
-                            ></i>
-                            <h2 class="text-xl font-semibold text-[#212529]">
-                                Pending Inquiries
-                            </h2>
-                            <p class="text-4xl font-bold text-[#007bff]">
-                                {{ pendingInquiries }}
-                            </p>
-                        </div>
-                        <div
-                            class="bg-white p-6 rounded-lg shadow-md flex flex-col items-center justify-center hover:shadow-lg transition-shadow duration-300"
-                        >
-                            <i
-                                class="fas fa-building text-3xl text-[#007bff] mb-4"
-                            ></i>
-                            <h2 class="text-xl font-semibold text-[#212529]">
-                                Available Units
-                            </h2>
-                            <p class="text-4xl font-bold text-[#007bff]">
-                                {{ availableUnits }}
-                            </p>
-                        </div>
-                        <div
-                            class="bg-white p-6 rounded-lg shadow-md flex flex-col items-center justify-center hover:shadow-lg transition-shadow duration-300"
-                        >
-                            <i
-                                class="fas fa-user-friends text-3xl text-[#007bff] mb-4"
-                            ></i>
-                            <h2 class="text-xl font-semibold text-[#212529]">
-                                Total Tenants
-                            </h2>
-                            <p class="text-4xl font-bold text-[#007bff]">
-                                {{ totalTenants }}
-                            </p>
-                        </div>
+                            <thead>
+                                <tr>
+                                    <th class="py-2 px-4 border-b text-center">Unit no.</th>
+                                    <th class="py-2 px-4 border-b text-center">Name</th>
+                                    <th class="py-2 px-4 border-b text-center">Username</th>
+                                    <th class="py-2 px-4 border-b text-center">Email</th>
+                                    <th class="py-2 px-4 border-b text-center">Address</th>
+                                    <th class="py-2 px-4 border-b text-center">Phone</th>
+                                    <th class="py-2 px-4 border-b text-center">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="t in tenant.tenant_list" :key="t.id">
+                                    <td class="py-2 px-4 border-b text-center">
+                                        {{ t.id }}
+                                    </td>
+                                    <td class="py-2 px-4 border-b text-center">
+                                        <span class="pr-1">{{t.first_name}}</span>
+                                        <span class="pr-1">{{t.middle_name}}</span>
+                                        <span>{{t.last_name}}</span>
+                                    </td>
+                                    <td class="py-2 px-4 border-b text-center">
+                                        {{ t.username }}
+                                    </td>
+                                    <td class="py-2 px-4 border-b text-center">
+                                        {{ t.email }}
+                                    </td>
+                                    <td class="py-2 px-4 border-b text-center">
+                                        {{ t.address }}
+                                    </td>
+                                    <td class="py-2 px-4 border-b text-center">
+                                        {{ t.phone_number }}
+                                    </td>
+                                    <td class="py-2 px-4 border-b text-center">
+                                        <button
+                                            @click="tenant.editTenant(tenant)"
+                                            class="text-green-500 hover:text-green-700 transition-colors duration-200"
+                                        >
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button
+                                            @click="
+                                                tenant.confirmDelete(tenant.id)
+                                            "
+                                            class="text-red-500 hover:text-red-700 transition-colors duration-200"
+                                        >
+                                            <i class="fas fa-trash-alt"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
+            </div>
+        </div>
+
+        <div
+            v-if="tenant.showModal"
+            class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center px-4"
+        >
+            <div
+                class="bg-white p-8 rounded-xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto"
+            >
+                <h2
+                    class="text-3xl font-semibold mb-8 text-gray-800 border-b text-center pb-4"
+                >
+                    {{
+                        tenant.editingTenant ? "Edit Tenant" : "Add New Tenant"
+                    }}
+                </h2>
+                <form @submit.prevent="tenant.submitTenant">
+                    <div class="mb-4">
+                        <label
+                            class="block text-gray-600 text-sm font-medium mb-2"
+                        >
+                            First Name
+                        </label>
+                        <input
+                            type="text"
+                            v-model="tenant.first_name"
+                            class="w-full px-4 py-3 border border-gray-300 rounded-md"
+                            required
+                        />
+                    </div>
+                    <div class="mb-4">
+                        <label
+                            class="block text-gray-600 text-sm font-medium mb-2"
+                        >
+                            Middle Name
+                        </label>
+                        <input
+                            type="text"
+                            v-model="tenant.middle_name"
+                            class="w-full px-4 py-3 border border-gray-300 rounded-md"
+                        />
+                    </div>
+                    <div class="mb-4">
+                        <label
+                            class="block text-gray-600 text-sm font-medium mb-2"
+                        >
+                            Last Name
+                        </label>
+                        <input
+                            type="text"
+                            v-model="tenant.last_name"
+                            class="w-full px-4 py-3 border border-gray-300 rounded-md"
+                            required
+                        />
+                    </div>
+                    <div class="mb-4">
+                        <label
+                            class="block text-gray-600 text-sm font-medium mb-2"
+                        >
+                            Phone Number
+                        </label>
+                        <input
+                            type="text"
+                            v-model="tenant.phone_number"
+                            class="w-full px-4 py-3 border border-gray-300 rounded-md"
+                            required
+                        />
+                    </div>
+                    <div class="mb-4">
+                        <label
+                            class="block text-gray-600 text-sm font-medium mb-2"
+                        >
+                            Address
+                        </label>
+                        <input
+                            type="text"
+                            v-model="tenant.address"
+                            class="w-full px-4 py-3 border border-gray-300 rounded-md"
+                            required
+                        />
+                    </div>
+                    <div class="mb-4">
+                        <label
+                            class="block text-gray-600 text-sm font-medium mb-2"
+                        >
+                            Email
+                        </label>
+                        <input
+                            type="email"
+                            v-model="tenant.email"
+                            class="w-full px-4 py-3 border border-gray-300 rounded-md"
+                            required
+                        />
+                    </div>
+                    <div class="mb-4">
+                        <label
+                            class="block text-gray-600 text-sm font-medium mb-2"
+                        >
+                            Tenant Login Username (required)
+                        </label>
+                        <input
+                            type="text"
+                            v-model="tenant.username"
+                            class="w-full px-4 py-3 border border-gray-300 rounded-md"
+                            required
+                        />
+                    </div>
+                    <div class="mb-4">
+                        <label
+                            class="block text-gray-600 text-sm font-medium mb-2"
+                        >
+                            Tenant Login Password (required)
+                        </label>
+                        <input
+                            type="password"
+                            v-model="tenant.password"
+                            class="w-full px-4 py-3 border border-gray-300 rounded-md"
+                            required
+                        />
+                    </div>
+                    <!-- <div class="mb-4">
+                        <label
+                            class="block text-gray-600 text-sm font-medium mb-2"
+                        >
+                            Unit ID
+                        </label>
+                        <input
+                            type="number"
+                            v-model="tenant.unit_number"
+                            class="w-full px-4 py-3 border border-gray-300 rounded-md"
+                        />
+                    </div> -->
+                    <div class="mb-4">
+                        <label
+                            class="block text-gray-600 text-sm font-medium mb-2"
+                        >
+                            Is Representative
+                        </label>
+                        <input
+                            type="checkbox"
+                            v-model="tenant.isRepresentative"
+                            class="w-6 h-6"
+                        />
+                    </div>
+                    <div class="flex justify-end mt-8">
+                        <button
+                            type="button"
+                            @click="tenant.toggleModal()"
+                            class="bg-gray-100 text-gray-600 hover:text-gray-800 px-6 py-2 rounded-lg border border-gray-300 mr-4"
+                        >
+                            Cancel
+                        </button>
+                        <button
+                            type="submit"
+                            class="bg-blue-600 text-white hover:bg-blue-700 px-6 py-2 rounded-lg shadow-lg"
+                        >
+                            Save
+                        </button>
+                    </div>
+                </form>
             </div>
         </div>
     </section>
 </template>
 
 <script setup>
-import { useAdminAuthStore } from "./AdminStores/adminAuth";
-import { ref, onMounted } from "vue";
+import { onMounted } from "vue";
+import moment from "moment";
+import { useRoute } from "vue-router";
+import { tenantsStore } from "./AdminStores/tenantsStore";
 
-const adminAuthStore = useAdminAuthStore();
+const tenant = tenantsStore();
+const route = useRoute();
+const currentRoute = route.path;
 
 onMounted(() => {
-    adminAuthStore.getAdminName();
+    tenant.fetchTenants();
 });
 
-// Placeholder values for counters
-const totalUnits = ref(50); // Example value, replace with actual data
-const occupiedUnits = ref(35); // Example value, replace with actual data
-const monthlyPayments = ref("$15,000"); // Example value, replace with actual data
-const pendingInquiries = ref(5); // Example value, replace with actual data
-const availableUnits = ref(15); // Example value, replace with actual data
-const totalTenants = ref(40); // Example value, replace with actual data
-
 const logout = () => {
-    adminAuthStore.logoutAdmin();
+    tenant.logoutAdmin();
 };
 </script>
-
-<style scoped>
-body {
-    font-family: "Inter", sans-serif;
-}
-</style>

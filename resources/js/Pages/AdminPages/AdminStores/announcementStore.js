@@ -7,14 +7,10 @@ export const announcementStore = defineStore("announcementStore", {
         adminToken: localStorage.getItem("admin_token") || null,
         admin: null,
         adminName: "",
+        announcement_list: [],
         showModal: false,
         title: "",
         content: "",
-        announcement_list: {
-            data: [],
-            current_page: 1,
-            last_page: 1,
-        },
         editingAnnouncement: null,
     }),
     actions: {
@@ -123,10 +119,10 @@ export const announcementStore = defineStore("announcementStore", {
             this.content = announce.content;
             this.toggleModal();
         },
-        async fetchAnnouncements(page = 1) {
+        async fetchAnnouncements() {
             try {
                 const response = await axios.get(
-                    `/api/admin/getAnnouncements?page=${page}`,
+                    `/api/admin/getAnnouncements`,
                     {
                         headers: {
                             Authorization: `Bearer ${this.adminToken}`,

@@ -14,9 +14,11 @@ return new class extends Migration
         Schema::create('tenants', function (Blueprint $table) {
             $table->id();
             $table->string('first_name');
-            $table->string('middle_name');
+            $table->string('middle_name')->nullable();
             $table->string('last_name');
             $table->string('username');
+            $table->string('phone_number');
+            $table->string('address');
             $table->boolean('isRepresentative');
             $table->string('email')->unique();
             $table->string('password');
