@@ -13,8 +13,6 @@ return new class extends Migration
     {
         Schema::create('units', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('tenant_id')->constrained('tenants')->cascadeOnDelete()->nullable();
-            $table->string('unit_number');
             $table->tinyInteger('capacity');
             $table->boolean('availability');
             $table->integer('rent_cost');

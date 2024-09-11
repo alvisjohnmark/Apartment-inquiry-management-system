@@ -11,9 +11,15 @@ class Tenant extends Authenticatable
     use HasApiTokens, Notifiable;
 
     protected $fillable = [
-        'name', 'email', 'password', 'username',
+        'first_name', 'middle_name', 'last_name',
+        'username', 'phone_number', 'address',
+        'isRepresentative', 'email', 'password', 'unit_id'
     ];
 
+    public function unit()
+    {
+        return $this->belongsTo(Unit::class);
+    }
     protected $hidden = [
         'password', 'remember_token',
     ];

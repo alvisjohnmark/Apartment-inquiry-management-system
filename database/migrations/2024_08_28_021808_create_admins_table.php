@@ -37,3 +37,10 @@ return new class extends Migration
 //     'email' => 'admin@gmail.com', 
 //     'password' => bcrypt('password'), 
 // ]);
+
+// use \App\Models\Unit;
+// Unit::create([
+//     'capacity' => 4, 
+//     'availability' => true, 
+//     'rent_cost' => 1200, 
+// ]);
