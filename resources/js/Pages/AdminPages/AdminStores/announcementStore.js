@@ -129,7 +129,7 @@ export const announcementStore = defineStore("announcementStore", {
                         },
                     }
                 );
-                this.announcement_list = response.data.announcements;
+                this.announcement_list = response.data;
             } catch (error) {
                 console.error("Error fetching announcements:", error);
             }

@@ -11,9 +11,7 @@
                         alt="Logo"
                         class="w-8 h-8 mr-3"
                     />
-                    <h1 class="text-lg font-semibold">
-                        Welcome back, {{ unit.adminName }}!
-                    </h1>
+                    <h1 class="text-lg">Welcome back, {{ unit.adminName }}!</h1>
                 </div>
                 <div class="flex items-center space-x-4">
                     <button
@@ -36,7 +34,7 @@
                                 alt="Logo"
                                 class="mx-auto w-28 h-28 rounded-full shadow-md"
                             />
-                            <h2 class="mt-4 text-white text-lg font-semibold">
+                            <h2 class="mt-4 text-white text-lg">
                                 Anjos Apartment
                             </h2>
                         </div>
@@ -130,74 +128,133 @@
                 </div>
                 <div class="w-4/5 p-6 bg-white overflow-y-auto">
                     <div class="flex justify-between items-center mb-4">
-                        <h1 class="text-2xl font-bold text-[#343a40]">
-                            Units
-                        </h1>
-                        <button
-                            class="bg-[#007bff] text-white px-4 py-2 rounded shadow-md hover:bg-[#0056b3] transition-all duration-200"
-                            @click="announcement.toggleModal"
-                        >
-                            Add Unit
-                        </button>
+                        <h1 class="text-2xl font-bold text-[#343a40]">Units</h1>
                     </div>
                     <div class="grid grid-cols-2 gap-6">
                         <div
-                            class="p-6 bg-white rounded-lg shadow-lg border border-[#dee2e6] hover:shadow-xl transition-shadow duration-300"
+                            v-for="u in unit.unit_list"
+                            :key="u.id"
+                            class="p-4 bg-white rounded-lg shadow-lg border border-[#dee2e6] hover:shadow-xl transition-shadow duration-300"
                         >
                             <div
                                 class="flex justify-between items-center border-b pb-4 mb-4"
                             >
-                                <h2
-                                    class="text-xl font-semibold text-[#343a40]"
-                                >
-                                    Unit 1
+                                <h2 class="text-xl text-[#343a40]">
+                                    Unit {{ u.id }}
                                 </h2>
                                 <button
-                                    @click="editUnit(unit)"
+                                    @click="unit.openEditModal(u)"
                                     class="text-blue-600 hover:text-blue-800 transition-colors duration-200"
                                 >
                                     <i class="fas fa-edit mr-2"></i>Edit
                                 </button>
                             </div>
 
+                            <div class="mb-4">
+                                <span class=""
+                                    >Tenant representative:
+                                    <span v-if="u.tenants.length > 0">
+                                        <span>{{
+                                            u.representative.first_name
+                                        }}</span>
+                                    </span>
+                                    <div v-else>
+                                        <span>No representative assigned</span>
+                                    </div></span
+                                >
+                            </div>
                             <div class="flex items-center mb-4">
-                                <span class="mr-2 font-semibold"
-                                    >Occupied:</span
-                                >
-                                <input
-                                    type="checkbox"
-                                    v-model="unit.available"
-                                    class="form-checkbox h-5 w-5 text-blue-600"
-                                />
+                                <span class="mr-2">Occupied:</span>
+                                <div class="toggle-switch">
+                                    <input
+                                        type="checkbox"
+                                        :id="'toggleOccupied' + u.id"
+                                        v-model="u.availability"
+                                        @change="unit.updateOccupiedStatus(u)"
+                                    />
+                                    <label
+                                        :for="'toggleOccupied' + u.id"
+                                        class="switch"
+                                    ></label>
+                                </div>
                             </div>
                             <div class="mb-4">
-                                <span class="font-semibold"
-                                    >Tenant representative:</span
-                                >
-                                <p class="text-gray-700">John doe</p>
+                                <span class="">Capacity: {{ u.capacity }}</span>
                             </div>
                             <div class="mb-4">
-                                <span class="font-semibold"
-                                    >Paid This Month:</span
+                                <span class=""
+                                    >Rent per month: {{ u.rent_cost }}</span
                                 >
-                                <p>No</p>
-                            </div>
-                            <div class="mb-4">
-                                <span class="font-semibold"
-                                    >Overall rent month (August of 2024):</span
-                                >
-                                <p>7300</p>
                             </div>
                             <div class="flex justify-end gap-2">
                                 <button
-                                    class="mt-auto bg-blue-500 text-white px-4 py-2 rounded shadow-md hover:bg-blue-700 transition-all duration-200"
-                                >
-                                    Add Bills
-                                </button>
-                                <button
+                                    @click="unit.openConcernsModal(unit)"
                                     class="mt-auto bg-blue-500 text-white px-4 py-2 rounded shadow-md hover:bg-blue-700 transition-all duration-200"
                                 >
                                     View Concerns
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div
+                        v-if="unit.showConcernsModal"
+                        class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center"
+                    >
+                        <div class="bg-white w-1/3 rounded-lg shadow-lg p-6">
+                            <h2 class="text-2xl mb-4">
+                                Concerns for Unit {{ unit.selectedUnit.id }}
+                            </h2>
+                            <div
+                                v-for="concern in unit.selectedUnit.concerns"
+                                :key="concern.id"
+                                class="p-4 mb-4 bg-gray-100 rounded-lg shadow-md"
+                            >
+                                <h3 class="font-bold text-xl">
+                                    {{ concern.title }}
+                                </h3>
+                                <p class="mt-2">{{ concern.content }}</p>
+                            </div>
+                            <button
+                                @click="unit.closeConcernsModal"
+                                class="bg-red-500 text-white px-4 py-2 rounded shadow-md hover:bg-red-700 transition-all duration-200"
+                            >
+                                Close
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Edit Unit Modal -->
+                    <div
+                        v-if="unit.showEditModal"
+                        class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center"
+                    >
+                        <div class="bg-white w-1/3 rounded-lg shadow-lg p-6">
+                            <h2 class="text-2xl mb-4">
+                                Edit Unit {{ unit.selectedUnit.id }}
+                            </h2>
+                            <input
+                                v-model="unit.selectedUnit.capacity"
+                                class="mb-4 p-2 w-full border rounded"
+                                placeholder="Capacity"
+                            />
+                            <input
+                                v-model="unit.selectedUnit.rent_cost"
+                                class="mb-4 p-2 w-full border rounded"
+                                placeholder="Rent Cost"
+                            />
+                            <div class="flex justify-end gap-2">
+                                <button
+                                    @click="unit.updateUnit"
+                                    class="bg-green-500 text-white px-4 py-2 rounded shadow-md hover:bg-green-700 transition-all duration-200"
+                                >
+                                    Save
+                                </button>
+                                <button
+                                    @click="unit.closeEditModal"
+                                    class="bg-red-500 text-white px-4 py-2 rounded shadow-md hover:bg-red-700 transition-all duration-200"
+                                >
+                                    Close
                                 </button>
                             </div>
                         </div>
@@ -218,7 +275,9 @@ const route = useRoute();
 
 onMounted(() => {
     unit.getAdminName();
+    unit.fetchUnits();
 });
+
 const logout = () => {
     unit.logoutAdmin();
 };
@@ -226,7 +285,48 @@ const logout = () => {
 
 <style scoped>
 body {
-    font-family: "Inter", sans-serif;
     overflow: hidden;
+}
+
+.toggle-switch {
+    display: inline-block;
+    position: relative;
+    width: 34px;
+    height: 18px;
+}
+
+.toggle-switch input[type="checkbox"] {
+    display: none;
+}
+
+.toggle-switch .switch {
+    position: absolute;
+    cursor: pointer;
+    background-color: #ccc;
+    border-radius: 18px;
+    width: 100%;
+    height: 100%;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.toggle-switch .switch::before {
+    content: "";
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    background-color: #fff;
+    border-radius: 50%;
+    top: 1px;
+    left: 1px;
+    transition: transform 0.3s ease-in-out;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.toggle-switch input[type="checkbox"]:checked + .switch {
+    background-color: #141619;
+}
+
+.toggle-switch input[type="checkbox"]:checked + .switch::before {
+    transform: translateX(16px);
 }
 </style>

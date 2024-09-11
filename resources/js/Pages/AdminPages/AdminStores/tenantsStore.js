@@ -9,6 +9,7 @@ export const tenantsStore = defineStore("tenantsStore", {
         showModal: false,
         editingTenant: null,
 
+        unit_id: "",
         first_name: "",
         middle_name: "",
         last_name: "",
@@ -17,7 +18,7 @@ export const tenantsStore = defineStore("tenantsStore", {
         email: "",
         username: "",
         password: "",
-        isRepresentative: false,
+        isRepresentative: false, // Initialize as false
     }),
     actions: {
         logoutAdmin() {
@@ -25,7 +26,7 @@ export const tenantsStore = defineStore("tenantsStore", {
             this.admin = null;
             localStorage.removeItem("admin_token");
 
-            toast.error("Logged out successfully.", {
+            toast.success("Logged out successfully.", {
                 autoClose: 2000,
             });
 
@@ -50,8 +51,8 @@ export const tenantsStore = defineStore("tenantsStore", {
                         Authorization: `Bearer ${this.adminToken}`,
                     },
                 });
-                this.tenant_list = response.data.tenants;
-                console.log(this.tenant_list)
+                this.tenant_list = response.data;
+                console.log(this.tenant_list);
             } catch (error) {
                 console.error("Error fetching tenants:", error);
             }
@@ -71,7 +72,8 @@ export const tenantsStore = defineStore("tenantsStore", {
             this.email = "";
             this.username = "";
             this.password = "";
-            this.isRepresentative = null;
+            this.unit_id = "";
+            this.isRepresentative = false; // Reset to false
             this.editingTenant = null;
         },
         async submitTenant() {
@@ -82,7 +84,7 @@ export const tenantsStore = defineStore("tenantsStore", {
                 !this.address ||
                 !this.email ||
                 !this.username ||
-                !this.password
+                !this.unit_id
             ) {
                 Swal.fire({
                     icon: "error",
@@ -95,16 +97,18 @@ export const tenantsStore = defineStore("tenantsStore", {
 
             const tenantData = {
                 first_name: this.first_name,
-                middle_name: this.middle_name || "",
+                middle_name: this.middle_name,
                 last_name: this.last_name,
                 phone_number: this.phone_number,
                 address: this.address,
                 email: this.email,
                 username: this.username,
-                password: this.password,
-                unit_number: this.unit_number,
-                isRepresentative: this.isRepresentative || false,
+                unit_id: this.unit_id,
+                isRepresentative: this.isRepresentative,
             };
+            if (this.password) {
+                tenantData.password = this.password;
+            }
 
             Swal.fire({
                 title: this.editingTenant ? "Confirm Update" : "Confirm Add",
@@ -120,7 +124,7 @@ export const tenantsStore = defineStore("tenantsStore", {
                     try {
                         if (this.editingTenant) {
                             await axios.put(
-                                `/api/admin/tenants/${this.editingTenant.id}`,
+                                `/api/admin/updateTenant/${this.editingTenant.id}`,
                                 tenantData,
                                 {
                                     headers: {
@@ -156,9 +160,16 @@ export const tenantsStore = defineStore("tenantsStore", {
 
         editTenant(tenant) {
             this.editingTenant = tenant;
-            this.name = tenant.name;
+            this.unit_id = tenant.unit_id;
+            this.first_name = tenant.first_name;
+            this.middle_name = tenant.middle_name;
+            this.last_name = tenant.last_name;
+            this.phone_number = tenant.phone_number;
+            this.address = tenant.address;
             this.email = tenant.email;
-            this.phone = tenant.phone;
+            this.username = tenant.username;
+            this.password = tenant.password;
+            this.isRepresentative = !!tenant.isRepresentative; // Ensure it is a boolean
             this.toggleModal();
         },
         confirmDelete(id) {
@@ -171,7 +182,7 @@ export const tenantsStore = defineStore("tenantsStore", {
             }).then(async (result) => {
                 if (result.isConfirmed) {
                     try {
-                        await axios.delete(`/api/admin/tenants/${id}`, {
+                        await axios.delete(`/api/admin/deleteTenant/${id}`, {
                             headers: {
                                 Authorization: `Bearer ${this.adminToken}`,
                             },

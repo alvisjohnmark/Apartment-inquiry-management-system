@@ -143,31 +143,48 @@
                         </button>
                     </div>
 
-                    <!-- Tenants Table -->
                     <div class="overflow-x-auto">
                         <table
                             class="min-w-full bg-white border border-[#dee2e6]"
                         >
                             <thead>
                                 <tr>
-                                    <th class="py-2 px-4 border-b text-center">Unit no.</th>
-                                    <th class="py-2 px-4 border-b text-center">Name</th>
-                                    <th class="py-2 px-4 border-b text-center">Username</th>
-                                    <th class="py-2 px-4 border-b text-center">Email</th>
-                                    <th class="py-2 px-4 border-b text-center">Address</th>
-                                    <th class="py-2 px-4 border-b text-center">Phone</th>
-                                    <th class="py-2 px-4 border-b text-center">Actions</th>
+                                    <th class="py-2 px-4 border-b text-center">
+                                        Unit number
+                                    </th>
+                                    <th class="py-2 px-4 border-b text-center">
+                                        Name
+                                    </th>
+                                    <th class="py-2 px-4 border-b text-center">
+                                        Tenant Username
+                                    </th>
+                                    <th class="py-2 px-4 border-b text-center">
+                                        Email
+                                    </th>
+                                    <th class="py-2 px-4 border-b text-center">
+                                        Address
+                                    </th>
+                                    <th class="py-2 px-4 border-b text-center">
+                                        Phone
+                                    </th>
+                                    <th class="py-2 px-4 border-b text-center">
+                                        Actions
+                                    </th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr v-for="t in tenant.tenant_list" :key="t.id">
                                     <td class="py-2 px-4 border-b text-center">
-                                        {{ t.id }}
+                                        {{ t.unit_id }}
                                     </td>
                                     <td class="py-2 px-4 border-b text-center">
-                                        <span class="pr-1">{{t.first_name}}</span>
-                                        <span class="pr-1">{{t.middle_name}}</span>
-                                        <span>{{t.last_name}}</span>
+                                        <span class="pr-1">{{
+                                            t.first_name
+                                        }}</span>
+                                        <span class="pr-1">{{
+                                            t.middle_name
+                                        }}</span>
+                                        <span>{{ t.last_name }}</span>
                                     </td>
                                     <td class="py-2 px-4 border-b text-center">
                                         {{ t.username }}
@@ -181,17 +198,17 @@
                                     <td class="py-2 px-4 border-b text-center">
                                         {{ t.phone_number }}
                                     </td>
-                                    <td class="py-2 px-4 border-b text-center">
+                                    <td
+                                        class="py-2 px-4 border-b text-center flex gap-2 text-xl"
+                                    >
                                         <button
-                                            @click="tenant.editTenant(tenant)"
-                                            class="text-green-500 hover:text-green-700 transition-colors duration-200"
+                                            @click="tenant.editTenant(t)"
+                                            class="text-green-500 hover:text-green-700 transition-colors duration-200 px-2"
                                         >
-                                            <i class="fas fa-edit"></i>
+                                            <i class="fas fa-edit"> </i>
                                         </button>
                                         <button
-                                            @click="
-                                                tenant.confirmDelete(tenant.id)
-                                            "
+                                            @click="tenant.confirmDelete(t.id)"
                                             class="text-red-500 hover:text-red-700 transition-colors duration-200"
                                         >
                                             <i class="fas fa-trash-alt"></i>
@@ -220,6 +237,18 @@
                     }}
                 </h2>
                 <form @submit.prevent="tenant.submitTenant">
+                    <div class="mb-4">
+                        <label
+                            class="block text-gray-600 text-sm font-medium mb-2"
+                        >
+                            Unit Number
+                        </label>
+                        <input
+                            type="number"
+                            v-model="tenant.unit_id"
+                            class="w-full px-4 py-3 border border-gray-300 rounded-md"
+                        />
+                    </div>
                     <div class="mb-4">
                         <label
                             class="block text-gray-600 text-sm font-medium mb-2"
@@ -307,7 +336,6 @@
                             type="text"
                             v-model="tenant.username"
                             class="w-full px-4 py-3 border border-gray-300 rounded-md"
-                            required
                         />
                     </div>
                     <div class="mb-4">
@@ -320,21 +348,8 @@
                             type="password"
                             v-model="tenant.password"
                             class="w-full px-4 py-3 border border-gray-300 rounded-md"
-                            required
                         />
                     </div>
-                    <!-- <div class="mb-4">
-                        <label
-                            class="block text-gray-600 text-sm font-medium mb-2"
-                        >
-                            Unit ID
-                        </label>
-                        <input
-                            type="number"
-                            v-model="tenant.unit_number"
-                            class="w-full px-4 py-3 border border-gray-300 rounded-md"
-                        />
-                    </div> -->
                     <div class="mb-4">
                         <label
                             class="block text-gray-600 text-sm font-medium mb-2"
@@ -380,6 +395,7 @@ const currentRoute = route.path;
 
 onMounted(() => {
     tenant.fetchTenants();
+    tenant.getAdminName();
 });
 
 const logout = () => {
