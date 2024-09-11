@@ -99,7 +99,7 @@
                 <div class="testimonial-card">
                     <p class="text-gray-200 mb-4">
                         "The location is great, and the living experience is
-                        top-notch."
+                        top-notch. "Kano a""
                     </p>
                     <h4 class="font-bold text-xl text-white">- Drin A.</h4>
                 </div>
