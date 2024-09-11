@@ -34,5 +34,15 @@ class tenantController extends Controller
             'message' => 'Welcome to the tenant dashboard',
         ], 200);
     }
+
+    public function getTenantName()
+    {
+        $tenant = Auth::user();
+        
+        if ($tenant) {
+            return response()->json(['name' => $tenant->first_name]);
+        }
+        return response()->json(['error' => 'Unauthorized'], 401);
+    }
 }
 

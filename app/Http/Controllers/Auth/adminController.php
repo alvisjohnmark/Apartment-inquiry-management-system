@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Admin;
+use App\Models\Unit;
 use App\Models\Tenant;
 use App\Models\Announcement;
 use Illuminate\Support\Facades\Auth;
@@ -69,10 +70,7 @@ class adminController extends Controller
     public function getAnnouncements()
     {
         $announcements = Announcement::all();
-        return response()->json([
-            'success' => true,
-            'announcements' => $announcements,
-        ], 200);
+        return $announcements;
     }
 
     public function deleteAnnouncement($id)
@@ -103,19 +101,17 @@ class adminController extends Controller
     public function getTenants()
     {
         $tenants = Tenant::all();
-        return response()->json([
-            'success' => true,
-            'tenants' => $tenants,
-        ], 200);
+        return $tenants;
     }
 
     public function saveTenant(Request $request)
     {
 
         $tenant = new Tenant();
+        $tenant->unit_id = $request->input('unit_id');
         $tenant->first_name = $request->input('first_name');
         $tenant->middle_name = $request->input('middle_name');
-        $tenant->last_name = $request->input('first_name');
+        $tenant->last_name = $request->input('last_name');
         $tenant->phone_number = $request->input('phone_number');
         $tenant->email = $request->input('email');
         $tenant->address = $request->input('address');
@@ -134,19 +130,59 @@ class adminController extends Controller
     public function updateTenant(Request $request, $id)
     {
         $tenant = Tenant::findOrFail($id);
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:tenants,email,' . $tenant->id,
-            'phone' => 'required|string|max:20',
-        ]);
-
-        $tenant->updateRenant($request->all());
+    
+        $updateData = $request->all();
+    
+        if ($request->filled('password')) {
+            $updateData['password'] = bcrypt($request->password);
+        }
+    
+        $tenant->update($updateData);
+    
         return response()->json($tenant, 200);
     }
-
+    
+    
     public function deleteTenant($id)
     {
-        Tenant::destroy($id);
-        return response()->json(null, 204);
+        $tenant = Tenant::find($id);
+        if ($tenant) {
+            $tenant->delete();
+            return response()->json(['message' => 'Tenant deleted successfully.']);
+        } else {
+            return response()->json(['message' => 'Tenant not found.'], 404);
+        }
+    }
+
+    public function getUnits()
+    {
+        $units = Unit::with(['tenants' => function($query) {
+            $query->where('isRepresentative', 1); 
+        }])->get();
+        
+        foreach ($units as $unit) {
+            if ($unit->tenants->isEmpty()) {
+                $unit->representative = null;
+            } else {
+
+                $unit->representative = $unit->tenants->first();
+            }
+        }
+        
+        return $units;
+    }
+    public function updateUnit(Request $request, $id)
+    {
+        $updateData = $request->all();
+        $unit = Unit::find($id);
+        if (!$unit) {
+            return response()->json(['message' => 'Unit not found'], 404);
+        }
+        $unit->update($updateData);
+        return response()->json(['message' => 'Unit updated successfully']);
     }
 }
+    
+
+
+

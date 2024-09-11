@@ -17,8 +17,12 @@ Route::prefix('admin')->group(function () {
         Route::put('updateAnnouncement/{id}', [adminController::class, 'updateAnnouncement']);
         Route::get('getTenants', [adminController::class, 'getTenants']); 
         Route::post('saveTenant', [adminController::class, 'saveTenant']); 
-        Route::put('tenants/{id}', [adminController::class, 'updateTenant']); 
-        Route::delete('tenants/{id}', [adminController::class, 'deleteTenant']); 
+        Route::put('updateTenant/{id}', [adminController::class, 'updateTenant']); 
+        Route::delete('deleteTenant/{id}', [adminController::class, 'deleteTenant']);
+        Route::get('getUnits', [adminController::class, 'getUnits']); 
+        // Route::get('/units/{id}/concerns', [adminController::class, 'getConcerns']);
+        Route::put('/updateUnit/{id}', [adminController::class, 'updateUnit']);
+        
     });
 });
 
@@ -27,6 +31,7 @@ Route::prefix('tenant')->group(function () {
     Route::post('login', [tenantController::class, 'login']);
     Route::middleware('auth:sanctum')->group(function () {
         Route::get('dashboard', [tenantController::class, 'dashboard']);
+        Route::get('name', [tenantController::class, 'getTenantName']); 
     });
 });
 
